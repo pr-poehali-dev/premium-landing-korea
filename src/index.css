@@ -97,5 +97,36 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: "Golos Text", sans-serif;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .reveal {
+    opacity: 0;
+  }
+  .reveal.in-view {
+    animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .glass {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .navy-grid {
+    background-image:
+      linear-gradient(rgba(30, 91, 255, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(30, 91, 255, 0.07) 1px, transparent 1px);
+    background-size: 56px 56px;
   }
 }
