@@ -25,7 +25,7 @@ const advantages = [
   { icon: 'BadgeCheck', title: 'Проверенные работодатели', text: 'Проверенные работодатели с прозрачными условиями труда.' },
   { icon: 'MessagesSquare', title: 'Русскоязычная поддержка', text: 'Сопровождаем на родном языке на каждом шаге.' },
   { icon: 'Route', title: 'Сопровождение до работы', text: 'Ведём вас от заявки до первого рабочего дня.' },
-  { icon: 'Home', title: 'Помощь с жильём', text: 'Подбираем комфортное жильё рядом с местом работы.' },
+  { icon: 'Home', title: 'Помощь с жильём', text: 'Подбираем комфортное жильё.' },
   { icon: 'FileText', title: 'Оформление документов', text: 'Берём на себя оформление визы, договоры и все формальности.' },
   { icon: 'HeartHandshake', title: 'Поддержка после', text: 'Остаёмся на связи и помогаем уже после трудоустройства.' },
 ];
@@ -59,18 +59,36 @@ const services = [
 
 const steps = [
   { n: '01', icon: 'Send', title: 'Заявка', text: 'Оставляете заявку на сайте за минуту' },
-  { n: '02', icon: 'Phone', title: 'Консультация', text: 'Перезваниваем и обсуждаем ваши цели' },
-  { n: '03', icon: 'Search', title: 'Подбор вакансии', text: 'Находим работу под ваш опыт и пожелания' },
-  { n: '04', icon: 'FileSignature', title: 'Документы', text: 'Оформляем визу, K-ETA и договоры' },
+  { n: '02', icon: 'Phone', title: 'Консультация', text: 'Связываемся и обсуждаем ваши цели' },
+  { n: '03', icon: 'Search', title: 'Подбор вакансии', text: 'Находим работу под ваши пожелания' },
+  { n: '04', icon: 'FileSignature', title: 'Документы', text: 'Оформляем кету и все необходимые документы для перелёта' },
   { n: '05', icon: 'Plane', title: 'Прилёт', text: 'Встречаем вас прямо в аэропорту Кореи' },
   { n: '06', icon: 'Home', title: 'Заселение', text: 'Помогаем заехать в подготовленное жильё' },
   { n: '07', icon: 'Briefcase', title: 'Выход на работу', text: 'Сопровождаем до первого рабочего дня' },
 ];
 
 const vacancies = [
-  { title: 'Оператор производства', salary: '2 800 000 ₩/мес', region: 'Кёнгидо', housing: 'Жильё включено', img: IMG.work },
-  { title: 'Работник теплицы', salary: '2 500 000 ₩/мес', region: 'Чхунчхон', housing: 'Общежитие', img: IMG.housing },
-  { title: 'Сотрудник склада', salary: '3 000 000 ₩/мес', region: 'Инчхон', housing: 'Жильё включено', img: IMG.seoul },
+  {
+    title: 'Работник производства',
+    salary: '2 800 000 ₩/мес',
+    region: 'Кёнгидо',
+    details: ['Жильё предоставляется', 'Питание 2-разовое'],
+    img: 'https://cdn.poehali.dev/projects/d63b7d85-0f3e-4b08-ad0a-e351e4372f3c/files/757b2b39-a4d2-48be-a17d-48ac699f168f.jpg',
+  },
+  {
+    title: 'Работник теплицы',
+    salary: '3 900 000 ₩/мес',
+    region: 'Чхунчхон',
+    details: ['Проживание предоставляется', 'Питание 3-разовое'],
+    img: 'https://cdn.poehali.dev/projects/d63b7d85-0f3e-4b08-ad0a-e351e4372f3c/files/50a5ebd6-859e-41b2-8c84-d71e98fddad4.jpg',
+  },
+  {
+    title: 'Сотрудник склада',
+    salary: '3 200 000 ₩/мес',
+    region: 'Инчхон',
+    details: ['Жильё не предоставляется', 'Питание — обед'],
+    img: 'https://cdn.poehali.dev/projects/d63b7d85-0f3e-4b08-ad0a-e351e4372f3c/files/cd7a600a-d7b0-4b8a-af98-9680cc24535d.jpg',
+  },
 ];
 
 const reviews = [
@@ -111,7 +129,9 @@ const Index = () => {
           <div className="mt-4 flex items-center justify-between rounded-2xl glass border border-white/10 bg-navy/80 px-5 py-3 backdrop-blur-xl">
             <a href="#" className="flex items-center gap-2.5 text-white">
               <img src={IMG.logo} alt="K-Work" className="h-10 w-10 rounded-xl object-cover" />
-              <span className="font-display text-lg font-extrabold tracking-tight">K-<span className="text-royal">Work</span></span>
+              <span className="font-display text-lg font-extrabold tracking-tight text-white">
+                K-<span className="text-red-500">W</span>ork
+              </span>
             </a>
             <nav className="hidden items-center gap-8 md:flex">
               {navLinks.map((l) => (
@@ -151,10 +171,6 @@ const Index = () => {
         </div>
         <div className="container relative mx-auto px-6">
           <div className="max-w-3xl">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-sm text-white/80 animate-fade-in">
-              <span className="h-2 w-2 rounded-full bg-emerald-400" />
-              Официальное трудоустройство · Полное сопровождение
-            </div>
             <h1 className="font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-balance sm:text-6xl md:text-7xl animate-fade-up">
               Работа в Южной Корее <span className="text-royal">с полным</span> сопровождением
             </h1>
@@ -220,7 +236,7 @@ const Index = () => {
           <Reveal className="mb-14 max-w-2xl">
             <p className="mb-3 font-display text-sm font-bold uppercase tracking-widest text-royal">Наши услуги</p>
             <h2 className="font-display text-3xl font-extrabold tracking-tight text-navy md:text-5xl text-balance">
-              Полный спектр под одну цель — ваша работа в Корее
+              Полный спектр под разные цели
             </h2>
           </Reveal>
           <div className="grid gap-6 md:grid-cols-2">
@@ -260,17 +276,15 @@ const Index = () => {
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {steps.map((s, i) => (
               <Reveal key={s.n} delay={i * 60}>
-                <div className="group relative flex h-full items-start gap-4 rounded-2xl border border-white/10 bg-white/5 p-5 transition-all hover:border-royal/40 hover:bg-white/[0.08]">
-                  <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-royal">
-                    <Icon name={s.icon} fallback="Circle" size={20} />
+                <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-5 pt-6 transition-all hover:border-royal/40 hover:bg-white/[0.08]">
+                  <span className="pointer-events-none absolute -right-2 -top-3 font-display text-[80px] font-extrabold leading-none text-white/[0.05] select-none transition-colors group-hover:text-royal/10">
+                    {s.n}
+                  </span>
+                  <div className="relative mb-3 grid h-10 w-10 place-items-center rounded-xl bg-royal">
+                    <Icon name={s.icon} fallback="Circle" size={18} />
                   </div>
-                  <div>
-                    <div className="mb-1 flex items-center gap-2">
-                      <span className="font-display text-xs font-bold text-royal">{s.n}</span>
-                      <h3 className="font-display text-base font-bold leading-tight">{s.title}</h3>
-                    </div>
-                    <p className="text-sm leading-snug text-white/55">{s.text}</p>
-                  </div>
+                  <h3 className="relative font-display text-base font-bold leading-tight">{s.title}</h3>
+                  <p className="relative mt-1 text-sm leading-snug text-white/55">{s.text}</p>
                 </div>
               </Reveal>
             ))}
@@ -302,8 +316,12 @@ const Index = () => {
                   <div className="flex flex-1 flex-col p-6">
                     <h3 className="mb-1 font-display text-xl font-bold text-navy">{v.title}</h3>
                     <div className="mb-4 font-display text-lg font-extrabold text-royal">{v.salary}</div>
-                    <div className="mb-6 flex items-center gap-2 text-sm text-slate-500">
-                      <Icon name="Home" size={16} /> {v.housing}
+                    <div className="mb-6 space-y-1.5">
+                      {v.details.map((d) => (
+                        <div key={d} className="flex items-center gap-2 text-sm text-slate-500">
+                          <Icon name="Check" size={14} className="text-royal shrink-0" /> {d}
+                        </div>
+                      ))}
                     </div>
                     <a href="#contact" className="mt-auto">
                       <Button variant="outline" className="w-full rounded-xl border-navy/15 font-semibold text-navy hover:bg-navy hover:text-white">
@@ -424,7 +442,7 @@ const Index = () => {
               </div>
               <div className="p-8 md:p-10">
                 <h2 className="font-display text-3xl font-extrabold tracking-tight text-balance">Оставьте заявку</h2>
-                <p className="mt-2 text-white/60">Перезвоним и бесплатно проконсультируем.</p>
+                <p className="mt-2 text-white/60">Свяжемся и бесплатно проконсультируем.</p>
                 <form className="mt-7 space-y-4" onSubmit={(e) => e.preventDefault()}>
                   <Input placeholder="Ваше имя" className="h-12 rounded-xl border-white/15 bg-white/5 text-white placeholder:text-white/40 focus-visible:ring-royal" />
                   <Input placeholder="Телефон" type="tel" className="h-12 rounded-xl border-white/15 bg-white/5 text-white placeholder:text-white/40 focus-visible:ring-royal" />
@@ -447,7 +465,7 @@ const Index = () => {
             <div className="md:col-span-2">
               <div className="flex items-center gap-2.5">
                 <img src={IMG.logo} alt="K-Work" className="h-10 w-10 rounded-xl object-cover" />
-                <span className="font-display text-lg font-extrabold">K-<span className="text-royal">Work</span></span>
+                <span className="font-display text-lg font-extrabold text-white">K-<span className="text-red-500">W</span>ork</span>
               </div>
               <p className="mt-4 max-w-sm text-sm text-white/60">
                 Помогаем гражданам СНГ официально трудоустроиться в Южной Корее с полным сопровождением на всех этапах.
