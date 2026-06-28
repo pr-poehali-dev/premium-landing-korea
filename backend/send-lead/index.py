@@ -1,6 +1,6 @@
 import os
 import json
-import urllib.request
+import requests
 
 def handler(event: dict, context) -> dict:
     """Отправка заявки с сайта K-Work в Telegram-бот."""
@@ -47,13 +47,10 @@ def handler(event: dict, context) -> dict:
     chat_id = os.environ['TELEGRAM_CHAT_ID']
 
     url = f'https://api.telegram.org/bot{token}/sendMessage'
-    payload = json.dumps({'chat_id': chat_id, 'text': text, 'parse_mode': 'HTML'}).encode('utf-8')
-    req = urllib.request.Request(url, data=payload, headers={'Content-Type': 'application/json'})
-
-    with urllib.request.urlopen(req, timeout=15) as resp:
-        result = json.loads(resp.read())
+    resp = requests.post(url, json={'chat_id': chat_id, 'text': text, 'parse_mode': 'HTML'}, timeout=15)
+    result = resp.json()
 
     if not result.get('ok'):
-        return {'statusCode': 500, 'headers': CORS, 'body': json.dumps({'ok': False})}
+        return {'statusCode': 500, 'headers': CORS, 'body': json.dumps({'ok': False, 'error': str(result)})}
 
     return {'statusCode': 200, 'headers': CORS, 'body': json.dumps({'ok': True})}
