@@ -121,6 +121,8 @@ const navLinks = [
 const Index = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [onDark, setOnDark] = useState(true);
+  const [form, setForm] = useState({ name: '', phone: '', telegram: '' });
+  const [formState, setFormState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   useEffect(() => {
     const darkSections = ['hero', 'steps', 'contact'];
@@ -145,6 +147,23 @@ const Index = () => {
     checkSection();
     return () => window.removeEventListener('scroll', checkSection);
   }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name.trim() || !form.phone.trim()) return;
+    setFormState('loading');
+    try {
+      const res = await fetch('https://functions.poehali.dev/3400ea51-8dda-48f1-b8b5-71dffd63e9c4', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      setFormState(data.ok ? 'success' : 'error');
+    } catch {
+      setFormState('error');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white font-sans text-navy antialiased">
@@ -477,15 +496,54 @@ const Index = () => {
               <div className="p-8 md:p-10">
                 <h2 className="font-display text-3xl font-extrabold tracking-tight text-balance">Оставьте заявку</h2>
                 <p className="mt-2 text-white/60">Свяжемся и бесплатно проконсультируем.</p>
-                <form className="mt-7 space-y-4" onSubmit={(e) => e.preventDefault()}>
-                  <Input placeholder="Ваше имя" className="h-12 rounded-xl border-white/15 bg-white/5 text-white placeholder:text-white/40 focus-visible:ring-royal" />
-                  <Input placeholder="Телефон" type="tel" className="h-12 rounded-xl border-white/15 bg-white/5 text-white placeholder:text-white/40 focus-visible:ring-royal" />
-                  <Input placeholder="Telegram (@username)" className="h-12 rounded-xl border-white/15 bg-white/5 text-white placeholder:text-white/40 focus-visible:ring-royal" />
-                  <Button type="submit" size="lg" className="w-full rounded-xl bg-royal font-display text-base font-semibold hover:bg-royal/90">
-                    Отправить заявку
-                  </Button>
-                  <p className="text-center text-xs text-white/40">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности.</p>
-                </form>
+
+                {formState === 'success' ? (
+                  <div className="mt-7 flex flex-col items-center gap-4 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-6 py-10 text-center animate-fade-in">
+                    <div className="grid h-14 w-14 place-items-center rounded-full bg-emerald-500/20">
+                      <Icon name="CheckCircle" size={32} className="text-emerald-400" />
+                    </div>
+                    <div>
+                      <p className="font-display text-xl font-bold">Заявка отправлена!</p>
+                      <p className="mt-1 text-white/60">Свяжемся с вами в ближайшее время.</p>
+                    </div>
+                  </div>
+                ) : (
+                  <form className="mt-7 space-y-4" onSubmit={handleSubmit}>
+                    <Input
+                      placeholder="Ваше имя *"
+                      value={form.name}
+                      onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+                      required
+                      className="h-12 rounded-xl border-white/15 bg-white/5 text-white placeholder:text-white/40 focus-visible:ring-royal"
+                    />
+                    <Input
+                      placeholder="Телефон *"
+                      type="tel"
+                      value={form.phone}
+                      onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+                      required
+                      className="h-12 rounded-xl border-white/15 bg-white/5 text-white placeholder:text-white/40 focus-visible:ring-royal"
+                    />
+                    <Input
+                      placeholder="Telegram (@username)"
+                      value={form.telegram}
+                      onChange={(e) => setForm((f) => ({ ...f, telegram: e.target.value }))}
+                      className="h-12 rounded-xl border-white/15 bg-white/5 text-white placeholder:text-white/40 focus-visible:ring-royal"
+                    />
+                    {formState === 'error' && (
+                      <p className="text-sm text-red-400">Что-то пошло не так. Попробуйте ещё раз.</p>
+                    )}
+                    <Button
+                      type="submit"
+                      size="lg"
+                      disabled={formState === 'loading'}
+                      className="w-full rounded-xl bg-royal font-display text-base font-semibold hover:bg-royal/90 disabled:opacity-60"
+                    >
+                      {formState === 'loading' ? 'Отправляем...' : 'Отправить заявку'}
+                    </Button>
+                    <p className="text-center text-xs text-white/40">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности.</p>
+                  </form>
+                )}
               </div>
             </div>
           </div>
