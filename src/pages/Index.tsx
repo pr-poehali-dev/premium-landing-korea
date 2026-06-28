@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -71,7 +71,7 @@ const vacancies = [
   {
     title: 'Работник производства',
     salary: '2 800 000 ₩/мес',
-    region: 'Кёнгидо',
+    region: 'Пхёнтек',
     details: ['Проживание предоставляется', 'Питание 2-разовое'],
     img: 'https://cdn.poehali.dev/projects/d63b7d85-0f3e-4b08-ad0a-e351e4372f3c/files/757b2b39-a4d2-48be-a17d-48ac699f168f.jpg',
   },
@@ -120,22 +120,57 @@ const navLinks = [
 
 const Index = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [onDark, setOnDark] = useState(true);
+
+  useEffect(() => {
+    const darkSections = ['hero', 'steps', 'contact'];
+    const observers: IntersectionObserver[] = [];
+
+    const checkSection = () => {
+      const scrollY = window.scrollY + 64;
+      const sections = document.querySelectorAll('section[data-bg]');
+      let isDark = true;
+      sections.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        const top = rect.top + window.scrollY;
+        const bottom = top + rect.height;
+        if (scrollY >= top && scrollY < bottom) {
+          isDark = el.getAttribute('data-bg') === 'dark';
+        }
+      });
+      setOnDark(isDark);
+    };
+
+    window.addEventListener('scroll', checkSection, { passive: true });
+    checkSection();
+    return () => window.removeEventListener('scroll', checkSection);
+  }, []);
 
   return (
     <div className="min-h-screen bg-white font-sans text-navy antialiased">
       {/* NAV */}
       <header className="fixed top-0 inset-x-0 z-50">
         <div className="container mx-auto px-6">
-          <div className="mt-4 flex items-center justify-between rounded-2xl glass border border-white/10 bg-navy/80 px-5 py-3 backdrop-blur-xl">
-            <a href="#" className="flex items-center gap-2.5 text-white">
+          <div className={`mt-4 flex items-center justify-between rounded-2xl glass border px-5 py-3 backdrop-blur-xl transition-colors duration-300 ${
+            onDark
+              ? 'border-white/10 bg-navy/80'
+              : 'border-navy/10 bg-white/90'
+          }`}>
+            <a href="#" className="flex items-center gap-2.5">
               <img src={IMG.logo} alt="K-Work" className="h-10 w-10 rounded-xl object-cover" />
-              <span className="font-display text-lg font-extrabold tracking-tight text-white">
+              <span className={`font-display text-lg font-extrabold tracking-tight transition-colors duration-300 ${onDark ? 'text-white' : 'text-navy'}`}>
                 K-<span className="text-red-500">W</span>ork
               </span>
             </a>
             <nav className="hidden items-center gap-8 md:flex">
               {navLinks.map((l) => (
-                <a key={l.href} href={l.href} className="text-sm font-medium text-white/70 transition-colors hover:text-white">
+                <a
+                  key={l.href}
+                  href={l.href}
+                  className={`text-sm font-medium transition-colors duration-300 ${
+                    onDark ? 'text-white/75 hover:text-white' : 'text-navy/70 hover:text-navy'
+                  }`}
+                >
                   {l.label}
                 </a>
               ))}
@@ -143,7 +178,7 @@ const Index = () => {
             <a href="#contact" className="hidden md:block">
               <Button className="rounded-xl bg-royal font-display font-semibold hover:bg-royal/90">Консультация</Button>
             </a>
-            <button onClick={() => setMenuOpen((v) => !v)} className="text-white md:hidden" aria-label="Меню">
+            <button onClick={() => setMenuOpen((v) => !v)} className={`md:hidden transition-colors duration-300 ${onDark ? 'text-white' : 'text-navy'}`} aria-label="Меню">
               <Icon name={menuOpen ? 'X' : 'Menu'} size={24} />
             </button>
           </div>
@@ -163,7 +198,7 @@ const Index = () => {
       </header>
 
       {/* HERO */}
-      <section className="relative overflow-hidden bg-navy-deep pt-32 pb-24 text-white md:pt-44 md:pb-32">
+      <section data-bg="dark" className="relative overflow-hidden bg-navy-deep pt-32 pb-24 text-white md:pt-44 md:pb-32">
         <div className="absolute inset-0">
           <img src={IMG.seoul} alt="Сеул" className="h-full w-full object-cover opacity-30" />
           <div className="absolute inset-0 bg-gradient-to-b from-navy-deep/70 via-navy-deep/85 to-navy-deep" />
@@ -207,7 +242,7 @@ const Index = () => {
       </section>
 
       {/* ADVANTAGES */}
-      <section className="bg-white py-20 md:py-28">
+      <section data-bg="light" className="bg-white py-20 md:py-28">
         <div className="container mx-auto px-6">
           <Reveal className="mb-14 max-w-2xl">
             <h2 className="font-display text-3xl font-extrabold tracking-tight text-navy md:text-5xl text-balance">
@@ -218,8 +253,8 @@ const Index = () => {
             {advantages.map((a, i) => (
               <Reveal key={a.title} delay={i * 70}>
                 <div className="group h-full rounded-2xl border border-slate-100 bg-ice p-7 transition-all duration-300 hover:-translate-y-1 hover:border-royal/20 hover:shadow-xl hover:shadow-navy/5">
-                  <div className="mb-5 grid h-12 w-12 place-items-center rounded-xl bg-navy text-white transition-colors group-hover:bg-royal">
-                    <Icon name={a.icon} size={22} />
+                  <div className="mb-5 grid h-11 w-11 place-items-center rounded-xl bg-navy text-white transition-colors group-hover:bg-royal">
+                    <Icon name={a.icon} size={20} />
                   </div>
                   <h3 className="mb-2 font-display text-lg font-bold text-navy">{a.title}</h3>
                   <p className="text-sm leading-relaxed text-slate-500">{a.text}</p>
@@ -231,7 +266,7 @@ const Index = () => {
       </section>
 
       {/* SERVICES */}
-      <section id="services" className="bg-ice py-20 md:py-28">
+      <section id="services" data-bg="light" className="bg-ice py-20 md:py-28">
         <div className="container mx-auto px-6">
           <Reveal className="mb-14 max-w-2xl">
             <p className="mb-3 font-display text-sm font-bold uppercase tracking-widest text-royal">Наши услуги</p>
@@ -248,8 +283,8 @@ const Index = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-navy-deep via-navy/90 to-navy/60" />
                   </div>
                   <div className="relative flex h-full flex-col p-8 md:p-10">
-                    <div className="mb-6 grid h-14 w-14 place-items-center rounded-2xl bg-royal">
-                      <Icon name={s.icon} fallback="Briefcase" size={26} />
+                    <div className="mb-6 grid h-11 w-11 place-items-center rounded-2xl bg-royal">
+                      <Icon name={s.icon} fallback="Briefcase" size={20} />
                     </div>
                     <h3 className="mb-3 font-display text-2xl font-extrabold">{s.title}</h3>
                     <p className="text-white/70">{s.text}</p>
@@ -265,7 +300,7 @@ const Index = () => {
       </section>
 
       {/* STEPS */}
-      <section id="steps" className="bg-navy-deep py-20 text-white md:py-28">
+      <section id="steps" data-bg="dark" className="bg-navy-deep py-20 text-white md:py-28">
         <div className="container mx-auto px-6">
           <Reveal className="mb-14 max-w-2xl">
             <p className="mb-3 font-display text-sm font-bold uppercase tracking-widest text-royal">Как мы работаем</p>
@@ -277,11 +312,11 @@ const Index = () => {
             {steps.map((s, i) => (
               <Reveal key={s.n} delay={i * 60}>
                 <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-5 pt-6 transition-all hover:border-royal/40 hover:bg-white/[0.08]">
-                  <span className="pointer-events-none absolute -right-2 -top-3 font-display text-[80px] font-extrabold leading-none text-white/[0.05] select-none transition-colors group-hover:text-royal/10">
+                  <span className="pointer-events-none absolute right-3 top-2 font-display text-[120px] font-extrabold leading-none text-white/[0.04] select-none transition-colors group-hover:text-royal/10">
                     {s.n}
                   </span>
-                  <div className="relative mb-3 grid h-10 w-10 place-items-center rounded-xl bg-royal">
-                    <Icon name={s.icon} fallback="Circle" size={18} />
+                  <div className="relative mb-3 grid h-11 w-11 place-items-center rounded-xl bg-royal">
+                    <Icon name={s.icon} fallback="Circle" size={20} />
                   </div>
                   <h3 className="relative font-display text-base font-bold leading-tight">{s.title}</h3>
                   <p className="relative mt-1 text-sm leading-snug text-white/55">{s.text}</p>
@@ -293,7 +328,7 @@ const Index = () => {
       </section>
 
       {/* VACANCIES */}
-      <section id="vacancies" className="bg-white py-20 md:py-28">
+      <section id="vacancies" data-bg="light" className="bg-white py-20 md:py-28">
         <div className="container mx-auto px-6">
           <Reveal className="mb-14 flex flex-wrap items-end justify-between gap-6">
             <div className="max-w-2xl">
@@ -337,7 +372,7 @@ const Index = () => {
       </section>
 
       {/* REVIEWS */}
-      <section id="reviews" className="bg-ice py-20 md:py-28">
+      <section id="reviews" data-bg="light" className="bg-ice py-20 md:py-28">
         <div className="container mx-auto px-6">
           <Reveal className="mb-14 max-w-2xl">
             <p className="mb-3 font-display text-sm font-bold uppercase tracking-widest text-royal">Отзывы</p>
@@ -372,7 +407,7 @@ const Index = () => {
       </section>
 
       {/* TELEGRAM */}
-      <section className="bg-white py-20 md:py-28">
+      <section data-bg="light" className="bg-white py-20 md:py-28">
         <div className="container mx-auto px-6">
           <Reveal className="mb-12 max-w-2xl">
             <p className="mb-3 font-display text-sm font-bold uppercase tracking-widest text-royal">Сообщество</p>
@@ -384,8 +419,8 @@ const Index = () => {
             {channels.map((c, i) => (
               <Reveal key={c.title} delay={i * 90}>
                 <a href={c.url} className="group flex items-center gap-6 rounded-3xl bg-gradient-to-br from-navy to-navy-deep p-8 text-white transition-all hover:-translate-y-1 hover:shadow-2xl hover:shadow-navy/20">
-                  <div className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-royal">
-                    <Icon name={c.icon} fallback="Send" size={28} />
+                  <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-royal">
+                    <Icon name={c.icon} fallback="Send" size={20} />
                   </div>
                   <div className="flex-1">
                     <h3 className="font-display text-xl font-bold">{c.title}</h3>
@@ -400,7 +435,7 @@ const Index = () => {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="bg-ice py-20 md:py-28">
+      <section id="faq" data-bg="light" className="bg-ice py-20 md:py-28">
         <div className="container mx-auto px-6">
           <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
             <Reveal>
@@ -427,7 +462,7 @@ const Index = () => {
       </section>
 
       {/* CONTACT */}
-      <section id="contact" className="bg-navy-deep py-20 text-white md:py-28">
+      <section id="contact" data-bg="dark" className="bg-navy-deep py-20 text-white md:py-28">
         <div className="container mx-auto px-6">
           <div className="mx-auto max-w-4xl overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl">
             <div className="grid md:grid-cols-2">
