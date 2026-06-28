@@ -17,14 +17,16 @@ const IMG = {
     'https://cdn.poehali.dev/projects/d63b7d85-0f3e-4b08-ad0a-e351e4372f3c/files/0711011a-4b8e-46d4-bc7e-5904b5bb94b5.jpg',
   housing:
     'https://cdn.poehali.dev/projects/d63b7d85-0f3e-4b08-ad0a-e351e4372f3c/files/89cde639-516d-4fac-b0e1-ec7eb42feb13.jpg',
+  logo:
+    'https://cdn.poehali.dev/projects/d63b7d85-0f3e-4b08-ad0a-e351e4372f3c/bucket/c9962d26-eb16-4341-9ea1-e846159e838a.png',
 };
 
 const advantages = [
-  { icon: 'BadgeCheck', title: 'Проверенные работодатели', text: 'Только официальные компании с прозрачными условиями труда.' },
+  { icon: 'BadgeCheck', title: 'Проверенные работодатели', text: 'Проверенные работодатели с прозрачными условиями труда.' },
   { icon: 'MessagesSquare', title: 'Русскоязычная поддержка', text: 'Сопровождаем на родном языке на каждом шаге.' },
   { icon: 'Route', title: 'Сопровождение до работы', text: 'Ведём вас от заявки до первого рабочего дня.' },
   { icon: 'Home', title: 'Помощь с жильём', text: 'Подбираем комфортное жильё рядом с местом работы.' },
-  { icon: 'FileText', title: 'Оформление документов', text: 'Берём на себя визы, договоры и все формальности.' },
+  { icon: 'FileText', title: 'Оформление документов', text: 'Берём на себя оформление визы, договоры и все формальности.' },
   { icon: 'HeartHandshake', title: 'Поддержка после', text: 'Остаёмся на связи и помогаем уже после трудоустройства.' },
 ];
 
@@ -56,13 +58,13 @@ const services = [
 ];
 
 const steps = [
-  { n: '01', icon: 'Send', title: 'Заявка' },
-  { n: '02', icon: 'Phone', title: 'Консультация' },
-  { n: '03', icon: 'Search', title: 'Подбор вакансии' },
-  { n: '04', icon: 'FileSignature', title: 'Документы' },
-  { n: '05', icon: 'Plane', title: 'Прилёт' },
-  { n: '06', icon: 'Home', title: 'Заселение' },
-  { n: '07', icon: 'Briefcase', title: 'Выход на работу' },
+  { n: '01', icon: 'Send', title: 'Заявка', text: 'Оставляете заявку на сайте за минуту' },
+  { n: '02', icon: 'Phone', title: 'Консультация', text: 'Перезваниваем и обсуждаем ваши цели' },
+  { n: '03', icon: 'Search', title: 'Подбор вакансии', text: 'Находим работу под ваш опыт и пожелания' },
+  { n: '04', icon: 'FileSignature', title: 'Документы', text: 'Оформляем визу, K-ETA и договоры' },
+  { n: '05', icon: 'Plane', title: 'Прилёт', text: 'Встречаем вас прямо в аэропорту Кореи' },
+  { n: '06', icon: 'Home', title: 'Заселение', text: 'Помогаем заехать в подготовленное жильё' },
+  { n: '07', icon: 'Briefcase', title: 'Выход на работу', text: 'Сопровождаем до первого рабочего дня' },
 ];
 
 const vacancies = [
@@ -107,9 +109,9 @@ const Index = () => {
       <header className="fixed top-0 inset-x-0 z-50">
         <div className="container mx-auto px-6">
           <div className="mt-4 flex items-center justify-between rounded-2xl glass border border-white/10 bg-navy/80 px-5 py-3 backdrop-blur-xl">
-            <a href="#" className="flex items-center gap-2 text-white">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-royal font-display font-extrabold">K</span>
-              <span className="font-display text-lg font-extrabold tracking-tight">KOREA<span className="text-royal">WORK</span></span>
+            <a href="#" className="flex items-center gap-2.5 text-white">
+              <img src={IMG.logo} alt="K-Work" className="h-10 w-10 rounded-xl object-cover" />
+              <span className="font-display text-lg font-extrabold tracking-tight">K-<span className="text-royal">Work</span></span>
             </a>
             <nav className="hidden items-center gap-8 md:flex">
               {navLinks.map((l) => (
@@ -192,7 +194,6 @@ const Index = () => {
       <section className="bg-white py-20 md:py-28">
         <div className="container mx-auto px-6">
           <Reveal className="mb-14 max-w-2xl">
-            <p className="mb-3 font-display text-sm font-bold uppercase tracking-widest text-royal">Почему мы</p>
             <h2 className="font-display text-3xl font-extrabold tracking-tight text-navy md:text-5xl text-balance">
               Берём на себя всё, чтобы вам было спокойно
             </h2>
@@ -256,15 +257,20 @@ const Index = () => {
               Семь понятных шагов до первого рабочего дня
             </h2>
           </Reveal>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {steps.map((s, i) => (
               <Reveal key={s.n} delay={i * 60}>
-                <div className="group relative h-full rounded-2xl border border-white/10 bg-white/5 p-6 transition-all hover:border-royal/40 hover:bg-white/[0.08]">
-                  <span className="font-display text-5xl font-extrabold text-white/10 transition-colors group-hover:text-royal/30">{s.n}</span>
-                  <div className="mt-3 mb-4 grid h-11 w-11 place-items-center rounded-xl bg-royal">
+                <div className="group relative flex h-full items-start gap-4 rounded-2xl border border-white/10 bg-white/5 p-5 transition-all hover:border-royal/40 hover:bg-white/[0.08]">
+                  <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-royal">
                     <Icon name={s.icon} fallback="Circle" size={20} />
                   </div>
-                  <h3 className="font-display text-lg font-bold">{s.title}</h3>
+                  <div>
+                    <div className="mb-1 flex items-center gap-2">
+                      <span className="font-display text-xs font-bold text-royal">{s.n}</span>
+                      <h3 className="font-display text-base font-bold leading-tight">{s.title}</h3>
+                    </div>
+                    <p className="text-sm leading-snug text-white/55">{s.text}</p>
+                  </div>
                 </div>
               </Reveal>
             ))}
@@ -439,9 +445,9 @@ const Index = () => {
         <div className="container mx-auto px-6">
           <div className="grid gap-10 md:grid-cols-4">
             <div className="md:col-span-2">
-              <div className="flex items-center gap-2">
-                <span className="grid h-9 w-9 place-items-center rounded-xl bg-royal font-display font-extrabold">K</span>
-                <span className="font-display text-lg font-extrabold">KOREA<span className="text-royal">WORK</span></span>
+              <div className="flex items-center gap-2.5">
+                <img src={IMG.logo} alt="K-Work" className="h-10 w-10 rounded-xl object-cover" />
+                <span className="font-display text-lg font-extrabold">K-<span className="text-royal">Work</span></span>
               </div>
               <p className="mt-4 max-w-sm text-sm text-white/60">
                 Помогаем гражданам СНГ официально трудоустроиться в Южной Корее с полным сопровождением на всех этапах.
@@ -467,7 +473,7 @@ const Index = () => {
             </div>
           </div>
           <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-sm text-white/40 sm:flex-row">
-            <span>© 2026 KoreaWork. Все права защищены.</span>
+            <span>© 2026 K-Work. Все права защищены.</span>
             <span>Официальное трудоустройство в Южной Корее</span>
           </div>
         </div>
